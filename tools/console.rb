@@ -1,18 +1,21 @@
 require_relative '../config/environment.rb'
 
-dan = Lifter.new('dan', 7)
-lucy = Lifter.new('lucy', 60)
+lifter1 = Lifter.new("Dan", 80)
+lifter2 = Lifter.new("Paul", 100)
+lifter3 = Lifter.new("Paolo", 12)
 
-l_boat = Gym.new('Lucy\'s boat')
-d_house = Gym.new('Dan\'s house')
-va = Gym.new('Virgin Active')
+gym1 = Gym.new("Rocky's")
+gym2 = Gym.new("EasyGym")
+gym3 = Gym.new("SwankyGym")
 
-m1 = Membership.new(30, dan, l_boat)
-m2 = Membership.new(4398, dan, d_house)
-m3 = Membership.new(120, dan, va)
-m4 = Membership.new(12, lucy, d_house)
-m5 = Membership.new(1320, dan, va)
+membership1 = Membership.new(gym1, lifter1, 1)
+membership2 = Membership.new(gym2, lifter1, 2)
+membership3 = Membership.new(gym3, lifter2, 3)
+membership4 = Membership.new(gym3, lifter3, 4)
+membership5 = Membership.new(gym1, lifter3, 5)
+
 
 
 binding.pry
- puts "amazing"
+
+puts "You rock!"

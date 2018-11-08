@@ -1,49 +1,45 @@
-
 class Lifter
+
   @@all = []
 
-  attr_reader :name, :lift_total
+  attr_accessor :name, :weight_lifted
 
-  def initialize(name, lift_total)
+  def initialize(name, weight_lifted)
     @name = name
-    @lift_total = lift_total
+    @weight_lifted = weight_lifted
     @@all << self
-  end
-
-  def memberships
-    Membership.all.select {|m| m.lifter == self}
-  end
-
-  def gyms
-    memberships.map {|m| m.gym}
-      .uniq
-  end
-
-  def self.avg_lift
-    lifts_array = Lifter.all.map{|l| l.lift_total}
-    sum_of_lifts = 0
-
-    lifts_array.each do |l|
-      sum_of_lifts += l
-      # sum_of_lifts = sum_of_lifts + l
-    end
-
-    sum_of_lifts.to_f/lifts_array.length
-  end
-
-  def total_cost
-    total = 0
-    memberships.map {|m| m.cost}
-      .each {|c| total += c}
-    total
-  end
-
-  def sign_up(cost, gym)
-    Membership.new(cost, self, gym)
   end
 
   def self.all
     @@all
+  end
+
+  def self.total_lifters
+    self.all.count
+  end
+
+  def memberships
+    Membership.all.select {|mem| mem if mem.lifter == self}
+  end
+
+  def gyms
+    self.memberships.map {|mem| mem.gym}
+  end
+
+  def self.average_lift
+    grand_total = 0
+    self.all.map {|lifter| grand_total += lifter.weight_lifted}
+    grand_total / self.total_lifters.to_f
+  end
+
+  def total_paid
+    total = 0
+    Membership.all.each {|mem| total += mem.price if mem.lifter == self}
+    total
+  end
+
+  def sign_up(gym, price)
+    Membership.new(gym, self, price)
   end
 
 end

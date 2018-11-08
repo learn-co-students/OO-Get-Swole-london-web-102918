@@ -1,7 +1,8 @@
 class Gym
-  attr_reader :name
 
   @@all = []
+
+  attr_accessor :name
 
   def initialize(name)
     @name = name
@@ -12,25 +13,26 @@ class Gym
     @@all
   end
 
-  def memberships
-    Membership.all.select {|m| m.gym == self}
+  def self.total_gyms
+    self.all.count
   end
 
-  def lifters
-    memberships.map {|m| m.lifter}
-      .uniq
+  def membership_list
+    Membership.all.select {|mem| mem if mem.gym == self}
+  end
+
+  def lifter_list
+    self.membership_list.map {|mem| mem.lifter}
   end
 
   def lifter_names
-    lifters.map {|l| l.name }
+    self.lifter_list.map {|lifter| lifter.name}
   end
 
-  def combined_lift_total
-    # lifters.inject(0){|sum, l| sum + l.lift_total }
-    
-    total_lift = 0
-    lifts_array = lifters.map {|lifter| lifter.lift_total}
-    lifts_array.each {|lift| total_lift += lift}
-    total_lift
+  def gym_lift_total
+    total = 0
+    self.lifter_list.each {|lifter| total += lifter.weight_lifted}
+    total
   end
+
 end
