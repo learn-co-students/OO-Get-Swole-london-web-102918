@@ -10,9 +10,16 @@ class Membership
     ALL << self
   end
 
-  def self.all 
+  def self.all
     ALL
   end
 
+#   def lifter_memberships(lifter)
+#     lifter_gym = []
+#     self.select do {|lifter| lifter, gym}
+#       lifter_gym
+#     end
+#
+# end
 
 end
