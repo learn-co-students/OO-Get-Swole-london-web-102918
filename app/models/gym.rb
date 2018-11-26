@@ -1,51 +1,36 @@
 class Gym
- ALL = []
-
   attr_reader :name
+
+  @@all = []
 
   def initialize(name)
     @name = name
-    ALL << self
-
+    @@all << self
   end
 
   def self.all
-    ALL
+    @@all
   end
 
   def memberships
-    #Access all memberships => [Memberships]
-    #determine wheter or not the membership belongs to this gym (self)
-    Membership.all.select do |m|
-      m.gym == self
-    end
+    Membership.all.select {|m| m.gym == self}
   end
-  
+
   def lifters
-    #Access all memberships
-    #our gym?
-    #make array of lifters from said memberships
-    self.memberships.map do |m|
-      m.lifter
-    end
+    memberships.map {|m| m.lifter}
+      .uniq
   end
 
   def lifter_names
-    #get lifters
-    #get names
-    self.lifters.map do |l|
-      l.name
-    end
+    lifters.map {|l| l.name }
   end
 
-  def total_lifter_liftable_weight
-    lifter_liftable_weight = 0
-    #get lifters
-    self.lifters.each do |l|
-      #add all of their weight
-      lifter_liftable_weight += l.lift_total
-    end
-    lifter_liftable_weight
+  def combined_lift_total
+    # lifters.inject(0){|sum, l| sum + l.lift_total }
+    
+    total_lift = 0
+    lifts_array = lifters.map {|lifter| lifter.lift_total}
+    lifts_array.each {|lift| total_lift += lift}
+    total_lift
   end
-
 end
