@@ -12,25 +12,24 @@ class Gym
     @@all
   end
 
-  def memberships
-    Membership.all.select {|m| m.gym == self}
+#Get a list of all memberships at a specific gym
+  def all_memberships_for_a_gym
+    Membership.all.select {|a| a.gym == self }
   end
 
-  def lifters
-    memberships.map {|m| m.lifter}
-      .uniq
+# Get a list of all the lifters that have a membership to a specific gym
+  def lifter_gym
+    all_memberships_for_a_gym.map {|a| a.lifter}
   end
+#Get a list of the names of all lifters that have a membership to that gym
 
-  def lifter_names
-    lifters.map {|l| l.name }
+  def members_names
+    lifter_gym.map {|l| l.name}
   end
-
-  def combined_lift_total
-    # lifters.inject(0){|sum, l| sum + l.lift_total }
-    
-    total_lift = 0
-    lifts_array = lifters.map {|lifter| lifter.lift_total}
-    lifts_array.each {|lift| total_lift += lift}
-    total_lift
+#Get the combined lift_total of every lifter that has a membership to that gym
+  def total_lift
+    total = 0
+    lifter_gym.each {|l| total += l.lift_total}
+    total
   end
 end

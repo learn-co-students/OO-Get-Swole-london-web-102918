@@ -1,5 +1,6 @@
 
 class Lifter
+
   @@all = []
 
   attr_reader :name, :lift_total
@@ -10,40 +11,33 @@ class Lifter
     @@all << self
   end
 
-  def memberships
-    Membership.all.select {|m| m.lifter == self}
-  end
-
-  def gyms
-    memberships.map {|m| m.gym}
-      .uniq
-  end
-
-  def self.avg_lift
-    lifts_array = Lifter.all.map{|l| l.lift_total}
-    sum_of_lifts = 0
-
-    lifts_array.each do |l|
-      sum_of_lifts += l
-      # sum_of_lifts = sum_of_lifts + l
-    end
-
-    sum_of_lifts.to_f/lifts_array.length
-  end
-
-  def total_cost
-    total = 0
-    memberships.map {|m| m.cost}
-      .each {|c| total += c}
-    total
-  end
-
-  def sign_up(cost, gym)
-    Membership.new(cost, self, gym)
-  end
-
   def self.all
     @@all
   end
+#Get a list of all the memberships that a specific lifter has
+  def membership
+    Membership.all.select {|a| a.lifter == self }
+  end
+#Get a list of all the gyms that a specific lifter has memberships to
+  def gyms
+    membership.map {|a| a.gym}
+  end
+# Get the average lift total of all lifters
+  def self.avr_lift
+    sum = 0
+    Lifter.all.each {|l| sum += l.lift_total}
+    sum.to_f/Lifter.all.length
+  end
+#Get the total cost of a specific lifter's gym memberships
+  def cost
+    sum = 0
+    membership.each {|c| sum += c.cost}
+    sum
+  end
+
+#Given a gym and a membership cost, sign a specific lifter up for a new gym
+ def create_memebership(cost, gym)
+   Membership.new(cost,self, gym)
+ end
 
 end
